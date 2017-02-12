@@ -1,1 +1,0 @@
-{"virtualbox":{"/home/vagrant/laravel-practical-test":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/laravel-practical-test","hostpath":"/home/felipe/Workspace/laravel-practical-test","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/felipe/Workspace/laravel-practical-test","disabled":false,"__vagrantfile":true}}}
