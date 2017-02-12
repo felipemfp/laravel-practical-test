@@ -7,14 +7,43 @@
 
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
-Vue.component('example', require('./components/Example.vue'));
+$(function() {
+  var $btnLoad = $('#btnLoad');
+  var loading = false;
+  var timeout = null;
 
-const app = new Vue({
-    el: '#app'
+  var updateLoading = function($target, text, stage) {
+   var nextStage = stage >= 3 ? 1 : stage + 1;
+   var nextText = text + new Array(nextStage).join('.');
+   $target.text(nextText);
+   timeout = setTimeout(function() {
+     updateLoading($target, text, nextStage);
+   }, 300);
+  }
+
+  var activateLoading = function($target) {
+   updateLoading($target, 'Loading', 0);
+  }
+
+  var reload = function(response) {
+   clearTimeout(timeout);
+   location.reload();
+  }
+
+  var fetch = function() {
+   $.ajax({
+     url: '/update',
+     complete: reload
+   });
+  }
+
+  $btnLoad.click(function() {
+   $btnLoad.attr('disabled', 'disabled');
+   if (!loading) {
+     activateLoading($btnLoad);
+     fetch();
+   }
+   loading = true;
+  });
 });
