@@ -11,5 +11,10 @@
   <div class="media-body">
     <h4 class="media-heading"><a href="{{ $story->url }}" target="_blank">{{ $story->title }}</a></h4>
     {{ $story->abstract }}
+    <div>
+      @foreach ($story->facets()->get() as $facet)
+        <span class="label label-default">{{ $facet->value }}</span>
+      @endforeach
+    </div>
   </div>
 </div>

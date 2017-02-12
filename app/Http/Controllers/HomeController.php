@@ -52,6 +52,9 @@ class HomeController extends Controller
           $story->created_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result->created_date);
           $story->published_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result->published_date);
 
+          $story->multimedia()->delete();
+          $story->facets()->delete();
+
           $story->save();
 
           foreach ($result->multimedia as $media) {

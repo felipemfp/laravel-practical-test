@@ -9,5 +9,9 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 .media {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
+}
+
+.media:last-child {
+  margin-bottom: auto;
 }
