@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Story;
-use App\Facet;
-use App\Multimedia;
+use App\Models\Story;
+use App\Models\Facet;
+use App\Models\Multimedia;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;

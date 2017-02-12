@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Story extends Model
     ];
 
     public function multimedia() {
-        return $this->hasMany('App\Multimedia');
+        return $this->hasMany('App\Models\Multimedia');
     }
 
     public function thumb() {
@@ -26,6 +26,6 @@ class Story extends Model
     }
 
     public function facets() {
-        return $this->hasMany('App\Facet');
+        return $this->hasMany('App\Models\Facet');
     }
 }
