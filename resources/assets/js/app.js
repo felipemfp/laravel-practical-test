@@ -17,33 +17,36 @@ $(function() {
    var nextStage = stage >= 3 ? 1 : stage + 1;
    var nextText = text + new Array(nextStage).join('.');
    $target.text(nextText);
-   timeout = setTimeout(function() {
-     updateLoading($target, text, nextStage);
-   }, 300);
+   updateLoadingLater($target, text, nextStage);
   }
 
-  var activateLoading = function($target) {
+  var updateLoadingLater = function ($target, text, stage) {
+    timeout = setTimeout(function () {
+      updateLoading($target, text, stage);
+    }, 300);
+  }
+
+  var activateLoading = function ($target) {
    updateLoading($target, 'Loading', 0);
   }
 
-  var reload = function(response) {
+  var reload = function (response) {
    clearTimeout(timeout);
    location.reload();
   }
 
-  var fetch = function() {
-   $.ajax({
-     url: '/update',
-     complete: reload
-   });
+  var fetch = function () {
+    window.axios.get('/update').then(reload);
   }
 
-  $btnLoad.click(function() {
-   $btnLoad.attr('disabled', 'disabled');
-   if (!loading) {
-     activateLoading($btnLoad);
-     fetch();
-   }
-   loading = true;
-  });
+  var onClick = function () {
+    $btnLoad.attr('disabled', 'disabled');
+    if (!loading) {
+      activateLoading($btnLoad);
+      fetch();
+    }
+    loading = true;
+  }
+
+  $btnLoad.click(onClick);
 });
