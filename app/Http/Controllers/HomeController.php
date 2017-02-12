@@ -6,8 +6,7 @@ use App\Models\Story;
 use App\Models\Facet;
 use App\Models\Multimedia;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
+use App\Services\NYTTopStories;
 
 class HomeController extends Controller
 {
@@ -38,33 +37,29 @@ class HomeController extends Controller
      */
     public function update()
     {
-        $client = new Client();
-        $response = $client->get('https://api.nytimes.com/svc/topstories/v2/movies.json', [
-          'query' => ['api-key' => env('NYT_KEY')]
-        ]);
-        $json = json_decode($response->getBody());
+        $data = NYTTopStories::fetchFromMovies();
 
-        foreach ($json->results as $result) {
-          $story = Story::firstOrNew(['short_url' => $result->short_url]);
+        foreach ($data['results'] as $result) {
+          $story = Story::firstOrNew(['short_url' => $result['short_url']]);
 
-          $story->fill((array) $result);
-          $story->updated_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result->updated_date);
-          $story->created_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result->created_date);
-          $story->published_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result->published_date);
+          $story->fill($result);
+          $story->updated_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result['updated_date']);
+          $story->created_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result['created_date']);
+          $story->published_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result['published_date']);
 
           $story->multimedia()->delete();
           $story->facets()->delete();
 
           $story->save();
 
-          foreach ($result->multimedia as $media) {
+          foreach ($result['multimedia'] as $media) {
               $multimedia = new Multimedia();
-              $multimedia->fill((array) $media);
+              $multimedia->fill($media);
               $multimedia->story_id = $story->id;
               $multimedia->save();
           }
 
-          foreach($result->des_facet as $des_facet) {
+          foreach($result['des_facet'] as $des_facet) {
             $facet = new Facet();
             $facet->value = $des_facet;
             $facet->story_id = $story->id;
@@ -72,7 +67,7 @@ class HomeController extends Controller
             $facet->save();
           }
 
-          foreach($result->org_facet as $org_facet) {
+          foreach($result['org_facet'] as $org_facet) {
             $facet = new Facet();
             $facet->value = $org_facet;
             $facet->story_id = $story->id;
@@ -80,7 +75,7 @@ class HomeController extends Controller
             $facet->save();
           }
 
-          foreach($result->per_facet as $per_facet) {
+          foreach($result['per_facet'] as $per_facet) {
             $facet = new Facet();
             $facet->value = $per_facet;
             $facet->story_id = $story->id;
@@ -88,7 +83,7 @@ class HomeController extends Controller
             $facet->save();
           }
 
-          foreach($result->geo_facet as $geo_facet) {
+          foreach($result['geo_facet'] as $geo_facet) {
             $facet = new Facet();
             $facet->value = $geo_facet;
             $facet->story_id = $story->id;
