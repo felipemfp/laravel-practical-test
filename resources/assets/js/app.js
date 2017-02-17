@@ -39,7 +39,7 @@ $(function() {
     window.axios.get('/update').then(reload);
   }
 
-  var onClick = function () {
+  var handleClick = function () {
     $btnLoad.attr('disabled', 'disabled');
     if (!loading) {
       activateLoading($btnLoad);
@@ -48,5 +48,5 @@ $(function() {
     loading = true;
   }
 
-  $btnLoad.click(onClick);
+  $btnLoad.click(handleClick);
 });

@@ -64,7 +64,7 @@ Go to [homestead.app](http://homestead.app) or whatever you put in your `hosts` 
 
 ## Built With
 
-* [Laravel](https://laravel.com/) - The web framework used
+* [Laravel](https://laravel.com/) - The web framework
 * [Guzzle](https://github.com/guzzle/guzzle) - The PHP HTTP client
 * [Axios](https://github.com/mzabriskie/axios) - The JavaScript HTTP client
 * [Bootstrap](http://getbootstrap.com/) - The CSS framework
