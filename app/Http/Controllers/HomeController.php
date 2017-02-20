@@ -40,7 +40,12 @@ class HomeController extends Controller
         $data = NYTTopStories::fetchFromMovies();
 
         foreach ($data['results'] as $result) {
-          $story = Story::firstOrNew(['short_url' => $result['short_url']]);
+          if (array_key_exists('short_url', $result)) {
+            $story = Story::firstOrNew(['short_url' => $result['short_url']]);
+          }
+          else {
+            $story = Story::firstOrNew(['url' => $result['url']]);
+          }
 
           $story->fill($result);
           $story->updated_date = \DateTime::createFromFormat('Y-m-d\TH:i:se', $result['updated_date']);
